@@ -14,7 +14,7 @@ public class SplashController : MonoBehaviour
             yield return new WaitForSeconds(2f); 
 
             // 3. Muda o estado PRIMEIRO, depois carrega a cena (ordem mais segura)
-            GameManager.Instance.ChangeState(GameState.MenuPrincipal);
+            
             GameManager.Instance.RequestSceneLoad("MenuPrincipal");
         }
         else
