@@ -759,6 +759,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 414db6cdd29deee4882abf80ba4ec6a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuPrincipal
+  btnIniciar: {fileID: 1898523165}
+  btnSair: {fileID: 1509367788}
+  nomeDaCenaDeJogo: GamePlay
 --- !u!1 &1348006590
 GameObject:
   m_ObjectHideFlags: 0

@@ -398,7 +398,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1726558788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5d850a59d620bd4f87594b46b210441, type: 3}
+  m_Script: {fileID: 11500000, guid: 7873be0be9f21f145bea7877187351b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplashController
 --- !u!4 &1726558790

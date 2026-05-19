@@ -1,92 +1,3 @@
-/*
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
-
-public class GameManager : MonoBehaviour
-{
-    public static GameManager Instance;
-
-    public enum GameState
-    {
-        Iniciando,
-        MenuPrincipal,
-        Gameplay
-    }
-
-    public GameState currentState;
-
-    private void Awake()
-    {
-        // Singleton
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            // Escuta quando a cena muda
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void Start()
-    {
-        SetState(GameState.Iniciando);
-        LoadScene("splash");
-    }
-
-    // Chamado automaticamente quando uma cena carrega
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("Cena carregada: " + scene.name);
-
-        if (scene.name == "splash")
-        {
-            SetState(GameState.Iniciando);
-        }
-        else if (scene.name == "Menu")
-        {
-            SetState(GameState.MenuPrincipal);
-        }
-        else if (scene.name == "GetStarted_Scene")
-        {
-            SetState(GameState.Gameplay);
-        }
-    }
-
-    public void SetState(GameState newState)
-    {
-        currentState = newState;
-        Debug.Log("Estado atual: " + currentState);
-    }
-
-    // Controle de cenas (SÓ o GameManager pode fazer isso)
-    public void LoadScene(string menuPrincipal)
-    {
-        SceneManager.LoadScene(menuPrincipal);
-    }
-
-    // Input allocation (simples)
-    public void SetupPlayerInput(PlayerInput playerInput)
-    {
-        Debug.Log("Input atribuído ao jogador: " + playerInput.name);
-    }
-
-    public void ChangeState(global::GameState exibindoSplash)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void RequestSceneLoad(string menuprincipal)
-    {
-        throw new System.NotImplementedException();
-    }
-}
-*/
 using UnityEngine;
 using UnityEngine.SceneManagement; 
 using UnityEngine.InputSystem; 
@@ -96,12 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     
-
     [SerializeField] private GameState currentState;
 
     private void Awake()
     {
-        
         if (Instance == null)
         {
             Instance = this;
@@ -115,35 +24,51 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Regra: Cena de _Boot inicia no estado 'Iniciando'
         ChangeState(GameState.Iniciando);
+        
+        // Inicia o fluxo automático indo para a Splash
         RequestSceneLoad("Splash"); 
     }
     
     public void ChangeState(GameState newState)
     {
         currentState = newState;
-        Debug.Log($"<color=cyan>Estado do Jogo alterado para: {currentState}</color>");
+        // Atende ao requisito: "A mudança de estados deve ser mostrada no console através de Debug.Log"
+        Debug.Log($"<color=cyan>[GameManager] Estado alterado para: {currentState}</color>");
     }
     
     public void RequestSceneLoad(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        // Centralização e validação de regras de estado com base na cena solicitada
+        if (sceneName == "Splash")
+        {
+            ChangeState(GameState.ExibindoSplash);
+            SceneManager.LoadScene(sceneName);
+        }
+        else if (sceneName == "MenuPrincipal")
+        {
+            ChangeState(GameState.MenuPrincipal);
+            SceneManager.LoadScene(sceneName);
+        }
+        else if (sceneName == "GetStarted_Scene")
+        {
+            ChangeState(GameState.Gameplay);
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            // Caso tenha outras cenas genéricas
+            SceneManager.LoadScene(sceneName);
+        }
     }
 
-    
+    // Requisito do Input System para Single Player
     public void AssignPlayerInput(PlayerInput playerInput)
     {
-        Debug.Log("Input alocado para o jogador.");
+        if (playerInput != null)
+        {
+            Debug.Log("<color=green>[GameManager] Input alocado com sucesso ao PlayerInput.</color>");
+        }
     }
-    
-    public void MenuPrincipal()
-    {
-        Instance.ChangeState(GameState.MenuPrincipal);
-    }
-    
-    public void Splash()
-    {
-        Instance.ChangeState(GameState.ExibindoSplash);
-    }
-    
 }

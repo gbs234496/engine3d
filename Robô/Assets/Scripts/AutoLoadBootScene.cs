@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 [InitializeOnLoad]
 public static class AutoLoadBootScene
 {
-    private const string PrefKey = "LastOpenedScenePath";
-    private const string BootSceneName = "_Boot";
+    private const string PREF_KEY = "LastOpenedScenePath";
+    private const string BOOT_SCENE_NAME = "_Boot";
 
     static AutoLoadBootScene()
     {
@@ -20,10 +20,10 @@ public static class AutoLoadBootScene
     {
         if (state == PlayModeStateChange.ExitingEditMode)
         {
-            string currentScenePath = SceneManager.GetActiveScene().path;
-            EditorPrefs.SetString(PrefKey, currentScenePath);
+            string currentScenePath = EditorSceneManager.GetActiveScene().path;
+            EditorPrefs.SetString(PREF_KEY, currentScenePath);
 
-            string[] guids = AssetDatabase.FindAssets(BootSceneName + " t:Scene");
+            string[] guids = AssetDatabase.FindAssets(BOOT_SCENE_NAME + " t:Scene");
             if (guids.Length > 0)
             {
                 string bootPath = AssetDatabase.GUIDToAssetPath(guids[0]);
@@ -33,16 +33,16 @@ public static class AutoLoadBootScene
             }
             else
             {
-                Debug.LogWarning($"Cena '{BootSceneName}' não encontrada no projeto. Verifique o nome.");
+                Debug.LogWarning($"Cena '{BOOT_SCENE_NAME}' não encontrada no projeto. Verifique o nome.");
             }
         }
         else if (state == PlayModeStateChange.EnteredPlayMode)
         {
-            string lastScenePath = EditorPrefs.GetString(PrefKey, "");
+            string lastScenePath = EditorPrefs.GetString(PREF_KEY, "");
 
             if (!string.IsNullOrEmpty(lastScenePath))
             {
-                if (!lastScenePath.Contains(BootSceneName) && SceneManager.GetActiveScene().name == BootSceneName)
+                if (!lastScenePath.Contains(BOOT_SCENE_NAME) && SceneManager.GetActiveScene().name == BOOT_SCENE_NAME)
                 {
                     // Aguarda 2 segundos (2000 milissegundos) sem congelar o Editor
                     await Task.Delay(2000);

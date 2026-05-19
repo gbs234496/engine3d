@@ -1,14 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class SplashSequence : MonoBehaviour
+public class SplashController : MonoBehaviour
 {
-    IEnumerator Start()
+    private void Start()
     {
-        GameManager.Instance.ChangeState(GameState.ExibindoSplash);
-        yield return new WaitForSeconds(2f); // Espera 2 segundos
+        // Inicia a contagem de tempo assim que a cena carrega
+        StartCoroutine(ContagemSplash());
+    }
+
+    private IEnumerator ContagemSplash()
+    {
+        // Requisito: Exibida por 2 segundos
+        yield return new WaitForSeconds(2f);
         
-        GameManager.Instance.ChangeState(GameState.MenuPrincipal);
-        GameManager.Instance.RequestSceneLoad("MenuPrincipal");
+        // Solicita a mudança para o GameManager (único com acesso ao SceneManager)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RequestSceneLoad("MenuPrincipal");
+        }
     }
 }
