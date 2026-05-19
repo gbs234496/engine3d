@@ -1,25 +1,32 @@
+/*
 using UnityEngine;
-using System.Collections;
 
 public class SplashController : MonoBehaviour
 {
-    IEnumerator Start()
+    private void Start()
     {
-        // 1. Verificação de segurança: espera o final do frame para garantir que o GameManager existe
-        yield return new WaitForEndOfFrame();
+        Invoke("GoToMenu", 2f);
+    }
 
-        if (GameManager.Instance != null)
-        {
-            // 2. Espera os 2 segundos reais
-            yield return new WaitForSeconds(2f); 
-
-            // 3. Muda o estado PRIMEIRO, depois carrega a cena (ordem mais segura)
-            
-            GameManager.Instance.RequestSceneLoad("MenuPrincipal");
-        }
-        else
-        {
-            Debug.LogError("O GameManager não foi encontrado! Você iniciou o jogo pela cena _Boot?");
-        }
+    void GoToMenu()
+    {
+        GameManager.Instance.LoadScene("Menu");
     }
 }
+*/
+using UnityEngine;
+using System.Collections;
+
+public class ExibindoSplash : MonoBehaviour
+{
+    IEnumerator Start()
+    {
+        
+        yield return new WaitForSeconds(2f); // Espera 2 segundos
+        
+        
+        GameManager.Instance.RequestSceneLoad("MenuPrincipal");
+    }
+}
+
+
